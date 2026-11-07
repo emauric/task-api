@@ -1,6 +1,5 @@
-import { body } from 'express-validator';
-import { checkValidationResults } from './handleValidationErrors.js';
 import { body, query } from 'express-validator';
+import { checkValidationResults } from './handleValidationErrors.js';
 
 export const validateTask = [
   body('title')
@@ -24,7 +23,7 @@ export const validateTaskQuery = [
   query('completed')
     .optional()
     .isIn(['true', 'false'])
-    .withMesssage('completed must be true or false'),
+    .withMessage('completed must be true or false'),
 
   checkValidationResults,
 ];
