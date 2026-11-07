@@ -16,8 +16,17 @@ paths:
   /tasks:
     get:
       summary: List all tasks
+      description: Returns all tasks. Use the completed query parameter to filter by status.
       tags:
         - Tasks
+      parameters:
+        - in: query
+          name: completed
+          required: false
+          description: Filter tasks by completion status. Omit to return all tasks.
+          schema:
+            type: boolean
+          example: true
       responses:
         '200':
           description: OK
@@ -27,25 +36,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Task'
-    post:
-      summary: Create a new task
-      tags:
-        - Tasks
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Task'
-      responses:
-        '201':
-          description: Task created successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Task'
         '400':
-          description: Bad request due to invalid data
+          description: Invalid value for the completed query parameter
           content:
             application/json:
               schema:
@@ -57,9 +49,10 @@ paths:
                     type: array
                     items:
                       type: string
-                example:
-                  errors:
-                    - 'Title must be at least 3 characters'
+              example:
+                error: Validation failed
+                details:
+                  - completed must be true or false
   /health:
     get:
       summary: Health Check
